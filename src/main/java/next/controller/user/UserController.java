@@ -39,6 +39,31 @@ public class UserController {
 		userDao.insert(user);
 		return "redirect:/";
 	}
+	@RequestMapping(value="loginForm",method =  RequestMethod.GET)
+	public String loginForm(){
+		
+		return "/user/login";
+	}
+	@RequestMapping(value="login",method =  RequestMethod.POST)
+	public String login(HttpSession session,User user){
+		
+		User findUser=userDao.findByUserId(user.getUserId());
+		
+		  if (findUser == null) {
+	            throw new NullPointerException("사용자를 찾을 수 없습니다.");
+	        }
+	        
+	        if (findUser.matchPassword(user.getPassword())) {
+	           
+	            session.setAttribute("user", user);
+	            return ("redirect:/");
+	        } else {
+	            throw new IllegalStateException("비밀번호가 틀립니다.");
+	        }
+		
+	}
+
+	
 	@RequestMapping(value="{id}" ,method= RequestMethod.POST)
 	public String show(@PathVariable String id,HttpSession session) {
 		if (!UserSessionUtils.isLogined(session)) {
