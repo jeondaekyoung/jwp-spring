@@ -1,5 +1,7 @@
 package next.controller.user;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
@@ -7,12 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
+import core.mvc.ModelAndView;
 import next.controller.UserSessionUtils;
 import next.controller.qna.AddAnswerController;
 import next.dao.UserDao;
@@ -20,11 +23,21 @@ import next.model.User;
 
 @Controller
 @RequestMapping("users")
-public class UserController {
+public class UserController  {
 	
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
 	
 	private UserDao userDao = UserDao.getInstance();
+	
+	@RequestMapping(value="" ,method= RequestMethod.GET)
+	public String index(HttpSession session,Model model) throws Exception  {
+		if (!UserSessionUtils.isLogined(session)) {
+			return ("redirect:/users/loginForm");
+		}
+		List<User> users=userDao.findAll();
+    	model.addAttribute("users",users );
+        return "/user/list";
+	}
 	
 	@RequestMapping(value="new" ,method= RequestMethod.GET)
 	public String form() {
@@ -67,7 +80,7 @@ public class UserController {
 		session.removeAttribute("user");
        return "redirect:/";
 	}
-
+	
 	
 	@RequestMapping(value="{id}" ,method= RequestMethod.POST)
 	public String show(@PathVariable String id,HttpSession session) {
