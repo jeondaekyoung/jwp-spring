@@ -93,10 +93,19 @@ public class UserController  {
 		
 		
 	}
+	//users/updateForm?userId=${user.userId}
 	
-	@RequestMapping(value="{id}/edit", method=RequestMethod.GET)
-	public String edit(){
-		return "";
+	@RequestMapping(value="{userId}/edit", method=RequestMethod.GET)
+	public String edit(@PathVariable String userId,HttpSession session,Model model){
+		User user = userDao.findByUserId(userId);
+
+    	if (!UserSessionUtils.isSameUser(session, user)) {
+        	throw new IllegalStateException("다른 사용자의 정보를 수정할 수 없습니다.");
+        }
+    	
+    	model.addAttribute("user", user);
+  
+		return "/user/updateForm";
 	}
 	@RequestMapping(value="{id}", method=RequestMethod.PUT)
 	public String update(){
