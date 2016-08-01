@@ -93,7 +93,6 @@ public class UserController  {
 		
 		
 	}
-	//users/updateForm?userId=${user.userId}
 	
 	@RequestMapping(value="{userId}/edit", method=RequestMethod.GET)
 	public String edit(@PathVariable String userId,HttpSession session,Model model){
