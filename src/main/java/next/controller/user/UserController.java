@@ -33,10 +33,10 @@ public class UserController {
 	}
 
 	@RequestMapping(value="create" ,method= RequestMethod.POST)
-	public String create(@RequestParam User user) {
+	public String create(User user) {
 		 
-		log.debug("생성 :",user.getName());
-		//userDao.insert(user);
+		 log.debug("User : {}", user);
+		userDao.insert(user);
 		return "redirect:/";
 	}
 	@RequestMapping(value="{id}" ,method= RequestMethod.POST)
