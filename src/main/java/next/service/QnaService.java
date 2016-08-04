@@ -18,14 +18,10 @@ import org.springframework.stereotype.Service;
 public class QnaService {
 	@Autowired
 	private QuestionDao questionDao;
-	@Resource
+	@Autowired
 	private AnswerDao answerDao;
 
-	public QnaService(QuestionDao questionDao, AnswerDao answerDao) {
-		this.questionDao = questionDao;
-		this.answerDao = answerDao;
-	}
-
+	
 	public Question findById(long questionId) {
 		return questionDao.findById(questionId);
 	}

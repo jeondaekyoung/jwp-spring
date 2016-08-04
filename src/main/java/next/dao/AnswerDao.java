@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import next.model.Answer;
@@ -16,7 +17,8 @@ import core.jdbc.PreparedStatementCreator;
 import core.jdbc.RowMapper;
 @Repository
 public class AnswerDao {
-	private JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 		
     public Answer insert(Answer answer) {
         String sql = "INSERT INTO ANSWERS (writer, contents, createdDate, questionId) VALUES (?, ?, ?, ?)";
