@@ -1,6 +1,9 @@
 package next.config;
 
+
 import java.util.List;
+
+import javax.activation.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -15,6 +18,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import core.jdbc.ConnectionManager;
 import core.web.argumentresolver.LoginUserHandlerMethodArgumentResolver;
 
 @Configuration
@@ -32,9 +36,13 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         return bean;
     }
     @Bean
-    public JdbcTemplate jdbcTemplate(){
+    public JdbcTemplate jdbcTemplate(DataSource dataSource){
     	
-    	return null;
+    	return new JdbcTemplate();
+    }
+    @Bean
+    public javax.sql.DataSource dataSource(){
+    	return ConnectionManager.getDataSource();
     }
     
     @Override
